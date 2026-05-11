@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, follow">
+  <title>Impressum – LLM Logistics</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .legal-page { max-width: 720px; margin: 0 auto; padding: 5rem 2rem 6rem; }
+    .legal-page h1 { font-size: 2rem; margin-bottom: 2rem; }
+    .legal-page h2 { font-size: 1.1rem; font-weight: 700; margin: 2rem 0 0.5rem; color: var(--text); }
+    .legal-page p, .legal-page a { font-size: 0.95rem; color: var(--text2); line-height: 1.75; }
+    .legal-page a { color: var(--accent-dark); }
+    .legal-page a:hover { color: var(--text); }
+    .back-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; font-weight: 600; color: var(--accent-dark); margin-bottom: 2.5rem; }
+    .back-link:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <nav class="navbar container" aria-label="Hauptnavigation">
+    <a class="brand" href="index.html" aria-label="LLM Logistics – Startseite">
+      <img src="assets/logo-nav.png" alt="LLM Logistics" width="180" height="26">
+    </a>
+    <div class="nav-links">
+      <a href="index.html#leistungen">Leistungen</a>
+      <a href="index.html#ueber">Über uns</a>
+      <a href="index.html#kontakt">Kontakt</a>
+      <a href="index.html#kontakt" class="nav-cta">Anfrage senden</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="legal-page">
+    <a class="back-link" href="index.html">
+      ← Zurück zur Startseite
+    </a>
+
+    <h1>Impressum</h1>
+
+    <h2>Angaben gemäß § 5 DDG</h2>
+    <p>
+      Hamid Kalaie<br>
+      LLM Logistics<br>
+      Grünauer Straße 52<br>
+      12557 Berlin<br>
+      Deutschland
+    </p>
+
+    <h2>Kontakt</h2>
+    <p>
+      Telefon: <a href="tel:+4917683345778">+49 176 833 45778</a><br>
+      E-Mail: <a href="mailto:info@llmlogistics.de">info@llmlogistics.de</a>
+    </p>
+
+    <h2>Tätigkeit</h2>
+    <p>Gütertransport und Logistikdienstleistungen.</p>
+
+    <h2>Zuständige Gewerbebehörde</h2>
+	<p>
+		Bezirksamt Treptow-Köpenick von Berlin<br>
+		Ordnungsamt Treptow-Köpenick / Gewerbeangelegenheiten<br>
+		Salvador-Allende-Straße 80 A<br>
+		12559 Berlin
+	</p>
+
+
+    <h2>Haftung für Inhalte</h2>
+    <p>
+      Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit,
+      Vollständigkeit und Aktualität der Inhalte übernehmen wir jedoch keine Gewähr. Als
+      Diensteanbieter sind wir für eigene Inhalte auf diesen Seiten nach den allgemeinen
+      gesetzlichen Vorschriften verantwortlich.
+    </p>
+
+    <h2>Haftung für Links</h2>
+    <p>
+      Unser Angebot kann Links zu externen Websites Dritter enthalten, auf deren Inhalte wir
+      keinen Einfluss haben. Für diese fremden Inhalte übernehmen wir keine Gewähr. Für die
+      Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der
+      jeweiligen Seiten verantwortlich.
+    </p>
+
+    <h2>Urheberrecht</h2>
+    <p>
+      Die durch den Seitenbetreiber erstellten Inhalte und Werke auf dieser Website unterliegen
+      dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung oder sonstige
+      Verwertung außerhalb der Grenzen des Urheberrechts bedarf der vorherigen schriftlichen
+      Zustimmung des jeweiligen Rechteinhabers.
+    </p>
+  </div>
+</main>
+
+<footer role="contentinfo">
+  <div class="container footer-inner">
+    <a href="index.html" aria-label="LLM Logistics – Startseite">
+      <img src="assets/logo-nav.png" alt="LLM Logistics" class="footer-logo">
+    </a>
+    <p class="footer-copy">© <span id="year"></span> LLM Logistics · Hamid Kalaie · Berlin</p>
+    <ul class="footer-links" role="list">
+      <li><a href="impressum.html">Impressum</a></li>
+      <li><a href="datenschutz.html">Datenschutz</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
