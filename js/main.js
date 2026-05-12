@@ -60,7 +60,13 @@ if (form) {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
     const data = new FormData(form);
+
     const company = (data.get('company') || '').toString().trim();
     const name    = (data.get('name')    || '').toString().trim();
     const email   = (data.get('email')   || '').toString().trim();
@@ -70,21 +76,27 @@ if (form) {
 
     const subject = `Transportanfrage von ${company}`;
 
-    // %0D%0A = CRLF – funktioniert in Thunderbird, Outlook & Co.
-    const nl  = '%0D%0A';
-    const nl2 = '%0D%0A%0D%0A';
+    const body = [
+      '=== Neue Transportanfrage – llmlogistics.de ===',
+      '',
+      `Unternehmen:      ${company}`,
+      `Ansprechpartner:  ${name}`,
+      `E-Mail:           ${email}`,
+      `Route / Gebiet:   ${route}`,
+      `Zeitraum:         ${date}`,
+      '',
+      '--- Nachricht ---',
+      '',
+      message,
+      '',
+      '================================================='
+    ].join('\n');
 
-    const body =
-      '===%20Neue%20Transportanfrage%20%E2%80%93%20llmlogistics.de%20===' + nl2 +
-      'Unternehmen:%20%20%20%20%20%20%20' + encodeURIComponent(company) + nl +
-      'Ansprechpartner:%20%20%20' + encodeURIComponent(name) + nl +
-      'E-Mail:%20%20%20%20%20%20%20%20%20%20%20' + encodeURIComponent(email) + nl +
-      'Route%20/%20Gebiet:%20%20%20%20' + encodeURIComponent(route) + nl +
-      'Zeitraum:%20%20%20%20%20%20%20%20%20' + encodeURIComponent(date) + nl2 +
-      '---%20Nachricht%20---' + nl2 +
-      encodeURIComponent(message) + nl2 +
-      '=================================================';
+    const mailtoUrl =
+      `mailto:${CONTACT_EMAIL}` +
+      `?subject=${encodeURIComponent(subject)}` +
+      `&body=${encodeURIComponent(body)}`;
 
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${body}`;
+    window.location.href = mailtoUrl;
   });
 }
