@@ -1,0 +1,85 @@
+# Name des Workflows.
+# Dieser Name erscheint später im GitHub-Reiter "Actions".
+name: Deploy GitHub Pages
+
+# Der Workflow wird NICHT automatisch bei jedem Push gestartet.
+# Er kann nur manuell über GitHub -> Actions -> Run workflow gestartet werden.
+on:
+  workflow_dispatch:
+
+# Rechte, die der Workflow braucht.
+# contents: read       = Repository lesen
+# pages: write         = GitHub Pages veröffentlichen
+# id-token: write      = Authentifizierung für GitHub Pages Deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Verhindert, dass mehrere Page-Deployments gleichzeitig laufen.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # GitHub-Pages-Deployment-Umgebung.
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Der Workflow läuft auf einem frischen Ubuntu-System von GitHub.
+    runs-on: ubuntu-latest
+
+    steps:
+      # Holt immer den aktuellen Stand aus main.
+      # Andere Branches werden NICHT deployed.
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      # Liest die Version aus der Datei VERSION.
+      # Diese Datei liegt im Root-Verzeichnis deines Projekts.
+      - name: Read site version
+        id: version
+        run: |
+          VERSION=$(cat VERSION)
+          echo "site_version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      # Erstellt zusätzlich eine version.txt im Deployment.
+      # Dadurch kannst du später im Browser prüfen:
+      # https://llmlogistics.de/version.txt
+      - name: Create version file
+        run: |
+          echo "${{ steps.version.outputs.site_version }}" > version.txt
+
+      # Ersetzt den Platzhalter __SITE_VERSION__ in allen HTML-Dateien
+      # durch die Version aus der Datei VERSION.
+      - name: Inject visible site version
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          version = "${{ steps.version.outputs.site_version }}"
+
+          for file in Path(".").glob("*.html"):
+              content = file.read_text(encoding="utf-8")
+              content = content.replace("__SITE_VERSION__", version)
+              file.write_text(content, encoding="utf-8")
+          PY
+
+      # Bereitet GitHub Pages vor.
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # Lädt deine statische Website als Pages-Artefakt hoch.
+      - name: Upload static website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      # Veröffentlicht das hochgeladene Artefakt auf GitHub Pages.
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
