@@ -57,7 +57,7 @@ if ('IntersectionObserver' in window) {
 
 // ── Kontaktformular → E-Mail ──
 if (form) {
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     if (!form.checkValidity()) {
@@ -77,20 +77,26 @@ if (form) {
     const subject = `Transportanfrage von ${company}`;
 
     const body = [
-      '=== Neue Transportanfrage – llmlogistics.de ===',
+      'Neue Transportanfrage über llmlogistics.de',
       '',
-      `Unternehmen:      ${company}`,
-      `Ansprechpartner:  ${name}`,
-      `E-Mail:           ${email}`,
-      `Route / Gebiet:   ${route}`,
-      `Zeitraum:         ${date}`,
+      `Unternehmen: ${company}`,
+      `Ansprechpartner: ${name}`,
+      `E-Mail: ${email}`,
+      `Route / Gebiet: ${route}`,
+      `Zeitraum: ${date}`,
       '',
-      '--- Nachricht ---',
+      'Nachricht:',
       '',
-      message,
-      '',
-      '================================================='
+      message
     ].join('\n');
+
+    // Fallback: Nachricht zusätzlich in die Zwischenablage kopieren.
+    // Falls eine Mail-App den Text nicht übernimmt, kann der Nutzer ihn einfügen.
+    try {
+      await navigator.clipboard.writeText(body);
+    } catch (err) {
+      // Kein Problem, falls Clipboard nicht erlaubt ist.
+    }
 
     const mailtoUrl =
       `mailto:${CONTACT_EMAIL}` +
